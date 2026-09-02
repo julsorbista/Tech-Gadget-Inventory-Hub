@@ -106,6 +106,18 @@ button {
   width: auto;
 }
 
+.filter-area {
+  max-width: 260px;
+  margin-left: auto;
+  margin-bottom: 20px;
+}
+
+.filter-area label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
 .table-container {
   overflow-x: auto;
 }
@@ -157,6 +169,44 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.detail-card {
+  margin-top: 25px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+
+.detail-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.detail-heading h2 {
+  margin: 0;
+}
+
+.role-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #2563eb;
+  color: white;
+  font-weight: bold;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 25px;
+}
+
+.detail-grid p {
+  margin: 5px 0;
+}
+
 @media (max-width: 700px) {
   .app {
     padding: 15px;
@@ -170,5 +220,14 @@ button:disabled {
 
   .new-button {
     width: 100%;
+  }
+
+  .filter-area {
+    max-width: none;
+    margin-left: 0;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
   }
 }

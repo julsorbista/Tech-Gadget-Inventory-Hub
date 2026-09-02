@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createPaginatedRowModel,
   flexRender,
@@ -39,9 +39,19 @@ function App() {
   const [gadgets, setGadgets] = useState([]);
   const [showTable, setShowTable] = useState(false);
   const [selectedGadget, setSelectedGadget] = useState(null);
+  const [activeGadget, setActiveGadget] = useState(null);
+  const [categoryFilter, setCategoryFilter] = useState("All");
+
+  let filteredGadgets = gadgets;
+
+  if (categoryFilter !== "All") {
+    filteredGadgets = gadgets.filter(function (gadget) {
+      return gadget.category === categoryFilter;
+    });
+  }
 
   const table = useTable({
-    data: gadgets,
+    data: filteredGadgets,
     columns: columns,
     features: tableSetup,
     initialState: {
@@ -50,6 +60,17 @@ function App() {
       },
     },
   });
+
+  useEffect(
+    function () {
+      if (selectedGadget !== null) {
+        // Phase 3 requires useEffect to synchronize the active row details.
+        // oxlint-disable-next-line react/set-state-in-effect
+        setActiveGadget(selectedGadget);
+      }
+    },
+    [selectedGadget],
+  );
 
   function handleGadgetName(event) {
     const value = event.target.value;
@@ -194,8 +215,8 @@ function App() {
               <option value="">Choose a category</option>
               <option value="Smartphone">Smartphone</option>
               <option value="Laptop">Laptop</option>
-              <option value="Headset">Headset</option>
-              <option value="Speakers">Speakers</option>
+              <option value="Wearable">Wearable</option>
+              <option value="Audio">Audio</option>
             </select>
             {categoryError && <span className="error">{categoryError}</span>}
           </div>
@@ -252,6 +273,17 @@ function App() {
             </button>
           </div>
 
+          <div className="filter-area">
+            <label>Filter by Category</label>
+            <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)}>
+              <option value="All">Show All</option>
+              <option value="Smartphone">Smartphone</option>
+              <option value="Laptop">Laptop</option>
+              <option value="Wearable">Wearable</option>
+              <option value="Audio">Audio</option>
+            </select>
+          </div>
+
           <div className="table-container">
             <table>
               <thead>
@@ -305,6 +337,36 @@ function App() {
               Next
             </button>
           </div>
+
+          {activeGadget !== null && (
+            <div className="detail-card">
+              <div className="detail-heading">
+                <h2>Active Gadget Profile</h2>
+                <span className="role-badge">{activeGadget.role}</span>
+              </div>
+
+              <div className="detail-grid">
+                <p>
+                  <strong>Gadget Name:</strong> {activeGadget.gadgetName}
+                </p>
+                <p>
+                  <strong>Category:</strong> {activeGadget.category}
+                </p>
+                <p>
+                  <strong>Manufacturer:</strong> {activeGadget.manufacturer}
+                </p>
+                <p>
+                  <strong>Health Rating:</strong> {activeGadget.healthRating}
+                </p>
+                <p>
+                  <strong>Tech Brand:</strong> {activeGadget.techBrand}
+                </p>
+                <p>
+                  <strong>User Role:</strong> {activeGadget.role}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
