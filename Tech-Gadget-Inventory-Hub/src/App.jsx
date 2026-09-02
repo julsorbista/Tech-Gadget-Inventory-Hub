@@ -2,235 +2,183 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [formData, setFormData] = useState({
-    gadgetName: "",
-    category: "",
-    manufacturer: "",
-    healthRating: "",
-    techBrand: "",
-    role: "",
-  });
+  const [gadgetName, setGadgetName] = useState("");
+  const [category, setCategory] = useState("");
+  const [manufacturer, setManufacturer] = useState("");
+  const [healthRating, setHealthRating] = useState("");
+  const [techBrand, setTechBrand] = useState("");
+  const [role, setRole] = useState("");
 
-  const [errors, setErrors] = useState({});
+  const [gadgetNameError, setGadgetNameError] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [manufacturerError, setManufacturerError] = useState("");
+  const [healthRatingError, setHealthRatingError] = useState("");
+  const [techBrandError, setTechBrandError] = useState("");
+  const [roleError, setRoleError] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  function handleGadgetName(event) {
+    const value = event.target.value;
+    setGadgetName(value);
+    if (value.trim() === "") {
+      setGadgetNameError("Please provide a gadget name.");
+    } else if (value.trim().length < 3) {
+      setGadgetNameError("Enter at least 3 characters for the gadget name.");
+    } else {
+      setGadgetNameError("");
+    }
+  }
 
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  function handleCategory(event) {
+    const value = event.target.value;
+    setCategory(value);
+    if (value === "") {
+      setCategoryError("Choose a gadget category.");
+    } else {
+      setCategoryError("");
+    }
+  }
 
-    validateField(name, value);
-  };
+  function handleManufacturer(event) {
+    const value = event.target.value;
+    setManufacturer(value);
+    if (value.trim() === "") {
+      setManufacturerError("Please provide the manufacturer.");
+    } else {
+      setManufacturerError("");
+    }
+  }
 
-  const validateField = (name, value) => {
-    let message = "";
+  function handleHealthRating(event) {
+    const value = event.target.value;
+    setHealthRating(value);
+    if (value === "") {
+      setHealthRatingError("Please enter a health rating.");
+    } else if (Number(value) < 1 || Number(value) > 100) {
+      setHealthRatingError("Enter a health rating from 1 to 100.");
+    } else {
+      setHealthRatingError("");
+    }
+  }
 
-    if (name === "gadgetName") {
-      if (!value.trim()) {
-        message = "Gadget name is required.";
-      } else if (value.length < 3) {
-        message = "Gadget name must be at least 3 characters.";
-      }
+  function handleTechBrand(event) {
+    const value = event.target.value;
+    setTechBrand(value);
+    if (value.trim() === "") {
+      setTechBrandError("Please provide the tech brand.");
+    } else {
+      setTechBrandError("");
+    }
+  }
+
+  function handleRole(event) {
+    setRole(event.target.value);
+    setRoleError("");
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    let formIsValid = true;
+
+    if (gadgetName.trim() === "") {
+      setGadgetNameError("Please provide a gadget name.");
+      formIsValid = false;
+    } else if (gadgetName.trim().length < 3) {
+      setGadgetNameError("Enter at least 3 characters for the gadget name.");
+      formIsValid = false;
     }
 
-    if (name === "category" && !value) {
-      message = "Please select a category.";
+    if (category === "") {
+      setCategoryError("Choose a gadget category.");
+      formIsValid = false;
     }
 
-    if (name === "manufacturer" && !value.trim()) {
-      message = "Manufacturer is required.";
+    if (manufacturer.trim() === "") {
+      setManufacturerError("Please enter the manufacturer.");
+      formIsValid = false;
     }
 
-    if (name === "healthRating") {
-      if (!value) {
-        message = "Health rating is required.";
-      } else if (Number(value) < 1 || Number(value) > 100) {
-        message = "Health rating must be between 1 and 100.";
-      }
+    if (healthRating === "") {
+      setHealthRatingError("Please enter a health rating.");
+      formIsValid = false;
+    } else if (Number(healthRating) < 1 || Number(healthRating) > 100) {
+      setHealthRatingError("Enter a health rating from 1 to 100.");
+      formIsValid = false;
     }
 
-    if (name === "techBrand" && !value.trim()) {
-      message = "Tech brand name is required.";
+    if (techBrand.trim() === "") {
+      setTechBrandError("Please enter the tech brand.");
+      formIsValid = false;
     }
 
-    if (name === "role" && !value) {
-      message = "Please select a user role.";
+    if (role === "") {
+      setRoleError("Choose either Engineer or Tester.");
+      formIsValid = false;
     }
 
-    setErrors((prev) => ({
-      ...prev,
-      [name]: message,
-    }));
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.gadgetName.trim()) {
-      newErrors.gadgetName = "Gadget name is required.";
-    } else if (formData.gadgetName.length < 3) {
-      newErrors.gadgetName =
-        "Gadget name must be at least 3 characters.";
+    if (formIsValid === true) {
+      alert("Gadget information saved successfully!");
     }
-
-    if (!formData.category) {
-      newErrors.category = "Please select a category.";
-    }
-
-    if (!formData.manufacturer.trim()) {
-      newErrors.manufacturer = "Manufacturer is required.";
-    }
-
-    if (!formData.healthRating) {
-      newErrors.healthRating = "Health rating is required.";
-    } else if (
-      Number(formData.healthRating) < 1 ||
-      Number(formData.healthRating) > 100
-    ) {
-      newErrors.healthRating =
-        "Health rating must be between 1 and 100.";
-    }
-
-    if (!formData.techBrand.trim()) {
-      newErrors.techBrand = "Tech brand name is required.";
-    }
-
-    if (!formData.role) {
-      newErrors.role = "Please select a user role.";
-    }
-
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    console.log("Submitted:", formData);
-    alert("Gadget added successfully!");
-  };
+  }
 
   return (
     <div className="app">
       <div className="form-card">
         <h1>Tech Gadget Inventory Hub</h1>
-        <p>Add a new gadget to the inventory.</p>
+        <p>Provide the gadget information below.</p>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Gadget Name</label>
-            <input
-              type="text"
-              name="gadgetName"
-              value={formData.gadgetName}
-              onChange={handleChange}
-              placeholder="Enter gadget name"
-            />
-            {errors.gadgetName && (
-              <span className="error">{errors.gadgetName}</span>
-            )}
+            <input type="text" value={gadgetName} onChange={handleGadgetName} placeholder="Type the gadget name"/>
+            {gadgetNameError && <span className="error">{gadgetNameError}</span>}
           </div>
 
           <div className="form-group">
             <label>Category</label>
-            <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-            >
-              <option value="">Select category</option>
+            <select value={category} onChange={handleCategory}>
+              <option value="">Choose a category</option>
               <option value="Smartphone">Smartphone</option>
               <option value="Laptop">Laptop</option>
               <option value="Wearable">Wearable</option>
               <option value="Audio">Audio</option>
             </select>
-            {errors.category && (
-              <span className="error">{errors.category}</span>
-            )}
+            {categoryError && <span className="error">{categoryError}</span>}
           </div>
 
           <div className="form-group">
             <label>Manufacturer</label>
-            <input
-              type="text"
-              name="manufacturer"
-              value={formData.manufacturer}
-              onChange={handleChange}
-              placeholder="Enter manufacturer"
-            />
-            {errors.manufacturer && (
-              <span className="error">{errors.manufacturer}</span>
-            )}
+            <input type="text" value={manufacturer} onChange={handleManufacturer} placeholder="Type the manufacturer name" />
+            {manufacturerError && <span className="error">{manufacturerError}</span>}
           </div>
 
           <div className="form-group">
             <label>Health Rating</label>
-            <input
-              type="number"
-              name="healthRating"
-              value={formData.healthRating}
-              onChange={handleChange}
-              placeholder="1 - 100"
-            />
-            {errors.healthRating && (
-              <span className="error">{errors.healthRating}</span>
-            )}
+            <input type="number" value={healthRating} onChange={handleHealthRating} placeholder="Choose from 1 to 100" min="1" max="100" />
+            {healthRatingError && <span className="error">{healthRatingError}</span>}
           </div>
 
           <div className="form-group">
             <label>Tech Brand Name</label>
-            <input
-              type="text"
-              name="techBrand"
-              value={formData.techBrand}
-              onChange={handleChange}
-              placeholder="Enter tech brand"
-            />
-            {errors.techBrand && (
-              <span className="error">{errors.techBrand}</span>
-            )}
+            <input type="text" value={techBrand} onChange={handleTechBrand} placeholder="Type the tech brand name" />
+            {techBrandError && <span className="error">{techBrandError}</span>}
           </div>
 
           <div className="form-group">
             <label>User Role</label>
-
             <div className="radio-group">
               <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="Engineer"
-                  checked={formData.role === "Engineer"}
-                  onChange={handleChange}
-                />
+                <input type="radio" name="role" value="Engineer" checked={role === "Engineer"} onChange={handleRole} />
                 Engineer
               </label>
-
               <label>
-                <input
-                  type="radio"
-                  name="role"
-                  value="Tester"
-                  checked={formData.role === "Tester"}
-                  onChange={handleChange}
-                />
+                <input type="radio" name="role" value="Tester" checked={role === "Tester"} onChange={handleRole} />
                 Tester
               </label>
             </div>
-
-            {errors.role && (
-              <span className="error">{errors.role}</span>
-            )}
+            {roleError && <span className="error">{roleError}</span>}
           </div>
 
-          <button type="submit">Add Gadget</button>
+          <button type="submit">Save Gadget</button>
         </form>
       </div>
     </div>
