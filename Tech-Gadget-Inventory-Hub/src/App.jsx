@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  createPaginatedRowModel,
-  flexRender,
-  rowPaginationFeature,
-  tableFeatures,
-  useTable,
-} from "@tanstack/react-table";
-import "./App.css";
+import { createPaginatedRowModel, flexRender, rowPaginationFeature, tableFeatures, useTable, } from "@tanstack/react-table";
+import styles from "./App.module.css";
 
 const tableSetup = tableFeatures({
   rowPaginationFeature,
@@ -64,8 +58,6 @@ function App() {
   useEffect(
     function () {
       if (selectedGadget !== null) {
-        // Phase 3 requires useEffect to synchronize the active row details.
-        // oxlint-disable-next-line react/set-state-in-effect
         setActiveGadget(selectedGadget);
       }
     },
@@ -196,20 +188,20 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <div className={styles.container}>
       {showTable === false ? (
-        <div className="form-card">
+        <div className={styles.formBox}>
         <h1>Tech Gadget Inventory Hub</h1>
         <p>Provide the gadget information below.</p>
 
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className={styles.inputGroup}>
             <label>Gadget Name</label>
             <input type="text" value={gadgetName} onChange={handleGadgetName} placeholder="Type the gadget name"/>
-            {gadgetNameError && <span className="error">{gadgetNameError}</span>}
+            {gadgetNameError && <span className={styles.errorMessage}>{gadgetNameError}</span>}
           </div>
 
-          <div className="form-group">
+          <div className={styles.inputGroup}>
             <label>Category</label>
             <select value={category} onChange={handleCategory}>
               <option value="">Choose a category</option>
@@ -218,30 +210,30 @@ function App() {
               <option value="Wearable">Wearable</option>
               <option value="Audio">Audio</option>
             </select>
-            {categoryError && <span className="error">{categoryError}</span>}
+            {categoryError && <span className={styles.errorMessage}>{categoryError}</span>}
           </div>
 
-          <div className="form-group">
+          <div className={styles.inputGroup}>
             <label>Manufacturer</label>
             <input type="text" value={manufacturer} onChange={handleManufacturer} placeholder="Type the manufacturer name" />
-            {manufacturerError && <span className="error">{manufacturerError}</span>}
+            {manufacturerError && <span className={styles.errorMessage}>{manufacturerError}</span>}
           </div>
 
-          <div className="form-group">
+          <div className={styles.inputGroup}>
             <label>Health Rating</label>
             <input type="number" value={healthRating} onChange={handleHealthRating} placeholder="Choose from 1 to 100" min="1" max="100" />
-            {healthRatingError && <span className="error">{healthRatingError}</span>}
+            {healthRatingError && <span className={styles.errorMessage}>{healthRatingError}</span>}
           </div>
 
-          <div className="form-group">
+          <div className={styles.inputGroup}>
             <label>Tech Brand Name</label>
             <input type="text" value={techBrand} onChange={handleTechBrand} placeholder="Type the tech brand name" />
-            {techBrandError && <span className="error">{techBrandError}</span>}
+            {techBrandError && <span className={styles.errorMessage}>{techBrandError}</span>}
           </div>
 
-          <div className="form-group">
+          <div className={styles.inputGroup}>
             <label>User Role</label>
-            <div className="radio-group">
+            <div className={styles.radioButtons}>
               <label>
                 <input type="radio" name="role" value="Engineer" checked={role === "Engineer"} onChange={handleRole} />
                 Engineer
@@ -251,7 +243,7 @@ function App() {
                 Tester
               </label>
             </div>
-            {roleError && <span className="error">{roleError}</span>}
+            {roleError && <span className={styles.errorMessage}>{roleError}</span>}
           </div>
 
           <button type="submit">Save Gadget</button>
@@ -260,20 +252,20 @@ function App() {
       ) 
       : 
       (
-        <div className="table-card">
+        <div className={styles.tableBox}>
           <h1>Tech Gadget Inventory Hub</h1>
 
-          <div className="table-title">
+          <div className={styles.tableHeader}>
             <div>
               <h2>Gadget Registry</h2>
               <p>Total gadgets: {gadgets.length}</p>
             </div>
-            <button className="new-button" onClick={() => setShowTable(false)}>
+            <button className={styles.addButton} onClick={() => setShowTable(false)}>
               Add Another Gadget
             </button>
           </div>
 
-          <div className="filter-area">
+          <div className={styles.filterBox}>
             <label>Filter by Category</label>
             <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)}>
               <option value="All">Show All</option>
@@ -284,7 +276,7 @@ function App() {
             </select>
           </div>
 
-          <div className="table-container">
+          <div className={styles.tableWrapper}>
             <table>
               <thead>
                 {table.getHeaderGroups().map(function (headerGroup) {
@@ -308,7 +300,7 @@ function App() {
                     <tr
                       key={row.id}
                       onClick={() => setSelectedGadget(row.original)}
-                      className={selectedGadget !== null && selectedGadget.id === row.original.id? "selected-row": "" }
+                      className={selectedGadget !== null && selectedGadget.id === row.original.id ? styles.activeRow : ""}
                     >
                       {row.getAllCells().map(function (cell) {
                         return (
@@ -324,7 +316,7 @@ function App() {
             </table>
           </div>
 
-          <div className="pagination">
+          <div className={styles.pageButtons}>
             <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
               Previous
             </button>
@@ -339,13 +331,13 @@ function App() {
           </div>
 
           {activeGadget !== null && (
-            <div className="detail-card">
-              <div className="detail-heading">
+            <div className={styles.infoBox}>
+              <div className={styles.infoHeader}>
                 <h2>Active Gadget Profile</h2>
-                <span className="role-badge">{activeGadget.role}</span>
+                <span className={styles.roleLabel}>{activeGadget.role}</span>
               </div>
 
-              <div className="detail-grid">
+              <div className={styles.infoGrid}>
                 <p>
                   <strong>Gadget Name:</strong> {activeGadget.gadgetName}
                 </p>

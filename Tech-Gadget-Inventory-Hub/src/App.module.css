@@ -1,0 +1,299 @@
+:global(*) {
+  box-sizing: border-box;
+}
+
+:global(body) {
+  margin: 0;
+  min-width: 320px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #395886;
+  background: #638ecb;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 24px;
+  background: #d5deef;
+}
+
+.formBox,
+.tableBox {
+  width: 100%;
+  padding: 34px;
+  border: 1px solid #b1c9ef;
+  border-top: 6px solid #395886;
+  border-radius: 16px;
+  background: #f0f3fa;
+  box-shadow: 0 14px 32px rgba(57, 88, 134, 0.2);
+  text-align: left;
+}
+
+.formBox {
+  max-width: 620px;
+}
+
+.tableBox {
+  max-width: 1120px;
+}
+
+.formBox h1,
+.tableBox h1 {
+  margin: 0;
+  color: #395886;
+  font-size: clamp(30px, 5vw, 42px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.8px;
+}
+
+.formBox > p {
+  margin: 10px 0 28px;
+  color: #395886;
+}
+
+.inputGroup {
+  margin-bottom: 18px;
+}
+
+.inputGroup > label,
+.filterBox label {
+  display: block;
+  margin-bottom: 7px;
+  color: #395886;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.formBox input,
+.formBox select,
+.filterBox select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #b1c9ef;
+  border-radius: 8px;
+  outline: none;
+  background: white;
+  color: #395886;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.formBox input:hover,
+.formBox select:hover,
+.filterBox select:hover {
+  border-color: #638ecb;
+  font-size: 15px;
+}
+
+.formBox input:focus,
+.formBox select:focus,
+.filterBox select:focus {
+  border-color: #395886;
+  box-shadow: 0 0 0 3px rgba(138, 174, 224, 0.28);
+}
+
+.radioButtons {
+  display: flex;
+  gap: 24px;
+  padding: 4px 0;
+}
+
+.radioButtons label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: normal;
+}
+
+.radioButtons input {
+  width: auto;
+  accent-color: #395886;
+}
+
+.errorMessage {
+  display: block;
+  margin-top: 6px;
+  color: #b42318;
+  font-size: 13px;
+}
+
+.formBox button,
+.tableBox button {
+  width: 100%;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: #395886;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.formBox button:hover,
+.tableBox button:hover:not(:disabled) {
+  background: #638ecb;
+  transform: translateY(-1px);
+}
+
+.tableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin: 28px 0 20px;
+}
+
+.tableHeader h2,
+.tableHeader p {
+  margin: 5px 0;
+}
+
+.tableHeader h2,
+.infoHeader h2 {
+  color: #395886;
+}
+
+.addButton {
+  width: auto !important;
+}
+
+.filterBox {
+  max-width: 260px;
+  margin: 0 0 20px auto;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border: 1px solid #b1c9ef;
+  border-radius: 10px;
+}
+
+.tableWrapper table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableWrapper th,
+.tableWrapper td {
+  padding: 12px;
+  border-bottom: 1px solid #d5deef;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tableWrapper th {
+  background: #395886;
+  color: white;
+}
+
+.tableWrapper tbody tr {
+  cursor: pointer;
+}
+
+.tableWrapper tbody tr:hover {
+  background: rgba(177, 201, 239, 0.35);
+}
+
+.tableWrapper tbody tr:nth-child(even) {
+  background: rgba(213, 222, 239, 0.45);
+}
+
+.tableWrapper tbody tr:nth-child(even):hover {
+  background: rgba(177, 201, 239, 0.35);
+}
+
+.tableWrapper .activeRow {
+  background: rgba(138, 174, 224, 0.45);
+}
+
+.pageButtons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.pageButtons button {
+  width: auto;
+  min-width: 100px;
+}
+
+.pageButtons button:disabled {
+  background: #d5deef;
+  color: #395886;
+  cursor: not-allowed;
+}
+
+.infoBox {
+  margin-top: 25px;
+  padding: 22px;
+  border: 1px solid #b1c9ef;
+  border-left: 5px solid #395886;
+  border-radius: 10px;
+  background: rgba(213, 222, 239, 0.45);
+}
+
+.infoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.infoHeader h2 {
+  margin: 0;
+}
+
+.roleLabel {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #638ecb;
+  color: white;
+  font-weight: 700;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 25px;
+}
+
+.infoGrid p {
+  margin: 5px 0;
+}
+
+@media (max-width: 700px) {
+  .container {
+    align-items: flex-start;
+    padding: 18px 12px;
+  }
+
+  .formBox,
+  .tableBox {
+    padding: 24px 18px;
+  }
+
+  .tableHeader {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .addButton {
+    width: 100% !important;
+  }
+
+  .filterBox {
+    max-width: none;
+    margin-left: 0;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+}
