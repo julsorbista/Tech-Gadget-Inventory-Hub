@@ -16,13 +16,21 @@ body {
   padding: 30px;
 }
 
-.form-card {
+.form-card,
+.table-card {
   width: 100%;
-  max-width: 600px;
   background: white;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.form-card {
+  max-width: 600px;
+}
+
+.table-card {
+  max-width: 1100px;
 }
 
 h1 {
@@ -78,4 +86,89 @@ button {
   border-radius: 6px;
   font-size: 16px;
   cursor: pointer;
+  background: #2563eb;
+  color: white;
+}
+
+.table-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.table-title h2,
+.table-title p {
+  margin: 5px 0;
+}
+
+.new-button {
+  width: auto;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  background: #f4f6f8;
+}
+
+tbody tr {
+  cursor: pointer;
+}
+
+tbody tr:hover {
+  background: #eef4ff;
+}
+
+.selected-row {
+  background: #dbeafe;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  width: auto;
+  min-width: 100px;
+}
+
+button:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+  .app {
+    padding: 15px;
+  }
+
+  .table-title {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .new-button {
+    width: 100%;
+  }
 }

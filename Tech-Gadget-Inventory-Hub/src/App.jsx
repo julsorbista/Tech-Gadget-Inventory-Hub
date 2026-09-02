@@ -1,5 +1,26 @@
 import { useState } from "react";
+import {
+  createPaginatedRowModel,
+  flexRender,
+  rowPaginationFeature,
+  tableFeatures,
+  useTable,
+} from "@tanstack/react-table";
 import "./App.css";
+
+const tableSetup = tableFeatures({
+  rowPaginationFeature,
+  paginatedRowModel: createPaginatedRowModel(),
+});
+
+const columns = [
+  { accessorKey: "gadgetName", header: "Gadget Name" },
+  { accessorKey: "category", header: "Category" },
+  { accessorKey: "manufacturer", header: "Manufacturer" },
+  { accessorKey: "healthRating", header: "Health Rating" },
+  { accessorKey: "techBrand", header: "Tech Brand" },
+  { accessorKey: "role", header: "User Role" },
+];
 
 function App() {
   const [gadgetName, setGadgetName] = useState("");
@@ -15,6 +36,20 @@ function App() {
   const [healthRatingError, setHealthRatingError] = useState("");
   const [techBrandError, setTechBrandError] = useState("");
   const [roleError, setRoleError] = useState("");
+  const [gadgets, setGadgets] = useState([]);
+  const [showTable, setShowTable] = useState(false);
+  const [selectedGadget, setSelectedGadget] = useState(null);
+
+  const table = useTable({
+    data: gadgets,
+    columns: columns,
+    features: tableSetup,
+    initialState: {
+      pagination: {
+        pageSize: 3,
+      },
+    },
+  });
 
   function handleGadgetName(event) {
     const value = event.target.value;
@@ -116,13 +151,33 @@ function App() {
     }
 
     if (formIsValid === true) {
-      alert("Gadget information saved successfully!");
+      const newGadget = {
+        id: Date.now(),
+        gadgetName: gadgetName,
+        category: category,
+        manufacturer: manufacturer,
+        healthRating: healthRating,
+        techBrand: techBrand,
+        role: role,
+      };
+
+      setGadgets([...gadgets, newGadget]);
+      setSelectedGadget(newGadget);
+      setShowTable(true);
+
+      setGadgetName("");
+      setCategory("");
+      setManufacturer("");
+      setHealthRating("");
+      setTechBrand("");
+      setRole("");
     }
   }
 
   return (
     <div className="app">
-      <div className="form-card">
+      {showTable === false ? (
+        <div className="form-card">
         <h1>Tech Gadget Inventory Hub</h1>
         <p>Provide the gadget information below.</p>
 
@@ -139,8 +194,8 @@ function App() {
               <option value="">Choose a category</option>
               <option value="Smartphone">Smartphone</option>
               <option value="Laptop">Laptop</option>
-              <option value="Wearable">Wearable</option>
-              <option value="Audio">Audio</option>
+              <option value="Headset">Headset</option>
+              <option value="Speakers">Speakers</option>
             </select>
             {categoryError && <span className="error">{categoryError}</span>}
           </div>
@@ -180,7 +235,78 @@ function App() {
 
           <button type="submit">Save Gadget</button>
         </form>
-      </div>
+        </div>
+      ) 
+      : 
+      (
+        <div className="table-card">
+          <h1>Tech Gadget Inventory Hub</h1>
+
+          <div className="table-title">
+            <div>
+              <h2>Gadget Registry</h2>
+              <p>Total gadgets: {gadgets.length}</p>
+            </div>
+            <button className="new-button" onClick={() => setShowTable(false)}>
+              Add Another Gadget
+            </button>
+          </div>
+
+          <div className="table-container">
+            <table>
+              <thead>
+                {table.getHeaderGroups().map(function (headerGroup) {
+                  return (
+                    <tr key={headerGroup.id}>
+                      {headerGroup.headers.map(function (header) {
+                        return (
+                          <th key={header.id}>
+                            {flexRender( header.column.columnDef.header, header.getContext(),)}
+                          </th>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </thead>
+
+              <tbody>
+                {table.getRowModel().rows.map(function (row) {
+                  return (
+                    <tr
+                      key={row.id}
+                      onClick={() => setSelectedGadget(row.original)}
+                      className={selectedGadget !== null && selectedGadget.id === row.original.id? "selected-row": "" }
+                    >
+                      {row.getAllCells().map(function (cell) {
+                        return (
+                          <td key={cell.id}>
+                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="pagination">
+            <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+              Previous
+            </button>
+
+            <span>
+              Page {table.state.pagination.pageIndex + 1} of {table.getPageCount()}
+            </span>
+
+            <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()} >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
